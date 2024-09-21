@@ -53,12 +53,10 @@ const QuestionCard = ({ ques }: { ques: Models.Document }) => {
                                 className="rounded-lg"
                             />
                         </picture>
-                        <Link
-                            href={`/users/${ques.author.$id}/${slugify(ques.author.name)}`}
-                            className="text-orange-500 hover:text-orange-600"
-                        >
+                        <Link href={`/users/${ques.author.$id}/${slugify(ques.author.name)}`} className="text-orange-500 hover:text-orange-600">
                             {ques.author.name}
                         </Link>
+
                         <strong>&quot;{ques.author.reputation}&quot;</strong>
                     </div>
                     <span>asked {convertDateToRelativeTime(new Date(ques.$createdAt))}</span>

@@ -1,4 +1,3 @@
-// route.ts
 import { NextResponse } from "next/server";
 import { databases } from "@/models/server/config";
 import { db, questionCollection } from "@/models/name";
@@ -36,7 +35,6 @@ export async function GET(request: Request) {
     const search = searchParams.get("search");
 
     const queries = [
-        // Set your default queries here
         Query.orderDesc("$createdAt"),
         Query.offset((+page - 1) * 25),
         Query.limit(25),
@@ -47,10 +45,7 @@ export async function GET(request: Request) {
     }
 
     if (search) {
-        queries.push(Query.or([
-            Query.search("title", search),
-            Query.search("content", search),
-        ]));
+        queries.push(Query.or([Query.search("title", search), Query.search("content", search)]));
     }
 
     try {

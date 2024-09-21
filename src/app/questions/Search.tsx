@@ -28,7 +28,7 @@ const Search = () => {
                 placeholder="Search questions"
                 value={search}
                 className="text-slate-950"
-                onChange={e => setSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
             />
             <button className="shrink-0 rounded bg-orange-500 px-4 py-2 font-bold text-white hover:bg-orange-600">
                 Search

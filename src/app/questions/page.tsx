@@ -5,23 +5,25 @@ import React from "react";
 import Link from "next/link";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import QuestionCard from "@/components/QuestionCard";
-import { UserPrefs } from "@/store/Auth";
 import Pagination from "@/components/Pagination";
 import Search from "./Search";
 
-const Page = async ({
+export default async function Page({
     searchParams,
 }: {
     searchParams: { page?: string; tag?: string; search?: string };
-}) => {
+}) {
+    // Default to page 1 if no page param is given
     searchParams.page ||= "1";
 
+    // Initialize the queries with the default: recent questions
     const queries = [
         Query.orderDesc("$createdAt"),
-        Query.offset((+searchParams.page - 1) * 25),
+        // Query.offset((+searchParams.page - 1) * 2),
         Query.limit(25),
     ];
 
+    // Only add filtering conditions if the search params exist
     if (searchParams.tag) queries.push(Query.equal("tags", searchParams.tag));
     if (searchParams.search)
         queries.push(
@@ -31,21 +33,24 @@ const Page = async ({
             ])
         );
 
+    // Fetch questions based on the current queries
+    console.log(searchParams, queries, "kaise")
     const questions = await databases.listDocuments(db, questionCollection, queries);
-    console.log("Questions", questions)
+    console.log(questions, "questions")
 
-    questions.documents = await Promise.all(
-        questions.documents.map(async ques => {
+    // Fetch extra data (author, answers, votes) only for the rendered questions
+    const questionsWithDetails = await Promise.all(
+        questions.documents.map(async (ques) => {
             const [author, answers, votes] = await Promise.all([
-                users.get<UserPrefs>(ques.authorId),
+                users.get(ques.authorId),
                 databases.listDocuments(db, answerCollection, [
                     Query.equal("questionId", ques.$id),
-                    Query.limit(1), // for optimization
+                    Query.limit(1),
                 ]),
                 databases.listDocuments(db, voteCollection, [
                     Query.equal("type", "question"),
                     Query.equal("typeId", ques.$id),
-                    Query.limit(1), // for optimization
+                    Query.limit(1),
                 ]),
             ]);
 
@@ -74,20 +79,31 @@ const Page = async ({
                     </ShimmerButton>
                 </Link>
             </div>
+
+            {/* Search component */}
             <div className="mb-4">
                 <Search />
             </div>
-            <div className="mb-4">
-                <p>{questions.total} questions</p>
-            </div>
-            <div className="mb-4 max-w-3xl space-y-6">
-                {questions.documents.map(ques => (
-                    <QuestionCard key={ques.$id} ques={ques} />
-                ))}
-            </div>
-            <Pagination total={questions.total} limit={25} />
+
+            {/* Only show the questions list if there are results */}
+            {questionsWithDetails.length > 0 && (
+                <>
+                    <div className="mb-4">
+                        <p>{questions.total} questions found</p>
+                    </div>
+                    <div className="mb-4 max-w-3xl space-y-6">
+                        {questionsWithDetails.map((ques) => (
+                            <QuestionCard key={ques.$id} ques={ques} />
+                        ))}
+                    </div>
+                    <Pagination className="mt-8" total={questions.total} limit={25} />
+                </>
+            )}
+
+            {/* Display if no questions are found */}
+            {questionsWithDetails.length === 0 && (
+                <p className="text-center">No questions found.</p>
+            )}
         </div>
     );
-};
-
-export default Page;
+}
