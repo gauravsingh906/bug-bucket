@@ -4,38 +4,31 @@ import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { useAuthStore } from "@/store/Auth";
 import Link from "next/link";
-
-const BottomGradient = () => {
-    return (
-        <>
-            <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
-            <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
-        </>
-    );
-};
-
-const LabelInputContainer = ({ children, className }: { children: React.ReactNode; className?: string; }) => {
-    return <div className={cn("flex w-full flex-col space-y-2", className)}>{children}</div>;
-};
+const BottomGradient = () => (
+    <>
+        <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+        <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+    </>
+);
+const LabelInputContainer = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+    <div className={cn("flex w-full flex-col space-y-2", className)}>{children}</div>
+);
 
 export default function Register() {
-    const { login, createAccount } = useAuthStore();
+    const { createAccount } = useAuthStore();
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState("");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         const formData = new FormData(e.currentTarget);
-        const firstname = formData.get("firstname");
-        const lastname = formData.get("lastname");
+        const name = formData.get("name");
         const email = formData.get("email");
         const password = formData.get("password");
 
-        if (!firstname || !lastname || !email || !password) {
+        if (!name || !email || !password) {
             setError("Please fill out all fields");
             return;
         }
@@ -43,22 +36,18 @@ export default function Register() {
         setIsLoading(true);
         setError("");
 
-        const response = await createAccount(
-            `${firstname} ${lastname}`,
-            email.toString(),
-            password.toString()
-        );
-
-        if (response.error) {
-            setError(response.error!.message);
-        } else {
-            const loginResponse = await login(email.toString(), password.toString());
-            if (loginResponse.error) {
-                setError(loginResponse.error!.message);
+        try {
+            const response = await createAccount(name.toString(), email.toString(), password.toString());
+            if (response.error) {
+                setError(response.error.message);
+            } else {
+                // Optionally, redirect to login or dashboard
             }
+        } catch {
+            setError("Registration failed.");
+        } finally {
+            setIsLoading(false);
         }
-
-        setIsLoading(false);
     };
 
     return (
@@ -108,30 +97,7 @@ export default function Register() {
 
                 <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
-                <div className="flex flex-col space-y-4">
-                    <button
-                        className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-                        type="button"
-                        disabled={isLoading}
-                    >
-                        <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-                        <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                            Sign in with Google
-                        </span>
-                        <BottomGradient />
-                    </button>
-                    <button
-                        className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-                        type="button"
-                        disabled={isLoading}
-                    >
-                        <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-                        <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                            Sign in with GitHub
-                        </span>
-                        <BottomGradient />
-                    </button>
-                </div>
+
             </form>
         </div>
     );

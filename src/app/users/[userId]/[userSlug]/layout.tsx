@@ -15,6 +15,7 @@ const Layout = async ({
     params: { userId: string; userSlug: string };
 }) => {
     const user = await users.get<UserPrefs>(params.userId);
+    console.log(user)
 
     return (
         <div className="container mx-auto space-y-6 px-6 pb-20 pt-32">
