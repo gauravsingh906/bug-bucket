@@ -35,6 +35,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     } else {
       router.push("/"); // If session already exists, redirect to home
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, router]);
 
   // If a session exists, prevent rendering the login page

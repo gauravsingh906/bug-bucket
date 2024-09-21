@@ -91,6 +91,7 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
                 resizeObserver.unobserve(canvasRef.current);
             }
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         starDensity,
         allStarsTwinkle,
@@ -132,6 +133,7 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
         return () => {
             cancelAnimationFrame(animationFrameId);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stars]);
 
     return (
