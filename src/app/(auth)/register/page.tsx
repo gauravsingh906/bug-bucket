@@ -53,15 +53,16 @@ export default function Register() {
     return (
         <div className="mx-auto mt-[4rem] w-full max-w-md rounded-lg border border-solid border-white/30 bg-white p-4 shadow-input dark:bg-black md:rounded-2xl md:p-8">
             <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
-                Welcome to Dev-Deploy
+                Welcome to <strong>bug-bucket</strong>
             </h2>
             <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-                Sign up to join the Dev-Deploy community. If you already have an account,{" "}
+                Join <strong>bug-bucket</strong> and start hunting bugs like a pro! Already part of the squad?{" "}
                 <Link href="/login" className="text-orange-500 hover:underline">
-                    login
+                    Log in
                 </Link>{" "}
-                to access your dashboard.
+                to dive back into your dashboard.
             </p>
+
 
             {error && (
                 <p className="mt-8 text-center text-sm text-red-500 dark:text-red-400">{error}</p>

@@ -94,11 +94,11 @@ export default function Login() {
 
     return (
         <div className="mx-auto w-full mt-[4rem] max-w-md rounded-lg border border-solid border-white/30 bg-white p-4 shadow-input dark:bg-black md:rounded-2xl md:p-8">
-            <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">Login to Dev-Deploy</h2>
+            <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">Login to bug bucket</h2>
             <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-                Log in to Dev-Dialog
-                <br /> If you don&apos;t have an account,{" "}
-                <Link href="/register" className="text-orange-500 hover:underline">register</Link>{" "} with Dev-Dialog
+                Welcome back to <strong>bug-bucket</strong> : your bug-fixing headquarters!
+                <br /> New here?{" "}
+                <Link href="/register" className="text-orange-500 hover:underline">Create an account</Link> and join the team to squash those bugs!
             </p>
 
             {error && <p className="mt-8 text-center text-sm text-red-500 dark:text-red-400">{error}</p>}

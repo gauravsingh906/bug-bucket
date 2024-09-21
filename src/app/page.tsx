@@ -3,45 +3,52 @@
 import React from "react";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
-import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
+import { TypewriterEffect, TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
+import Register from "./(auth)/register/page";
+import Link from "next/link";
 
 export default function Home() {
   const words = [
+
     {
-      text: "Build",
+      text: "Unlock",
     },
     {
-      text: "awesome",
+      text: "Insights,",
     },
     {
-      text: "apps",
+      text: "Resolve",
     },
     {
-      text: "with",
+      text: "Issues,",
     },
     {
-      text: "Aceternity.",
+      text: "Empower",
+    },
+
+    {
+      text: "Developers!",
       className: "text-blue-500 dark:text-blue-500",
     },
   ];
-  return (
-    <div className="h-[40rem] rounded-md bg-black flex flex-col items-center justify-center relative w-full">
-
-      <p className="text-neutral-600 dark:text-neutral-200 text-xs sm:text-base  ">
-        The road to freedom starts from here
+  return (<>
+    <div className="flex flex-col items-center justify-center lg:h-[35rem] h-[40rem] ">
+      <p className="text- text-slate-800 dark:text-slate-200text-[.75rem] sm:text-[1rem] lg:text-xl font-bold  text-center mb-6 text-wrap">
+        Where Coders Unite to Turn Frustration into Fixes and Deliver Solutions Together!
       </p>
-      <TypewriterEffectSmooth words={words} />
-      <div className="flex flex-col md:flex-row md:space-y-0 space-x-0 md:space-x-4">
-        <button className="w-40 h-10 rounded-xl bg-black border dark:border-white border-transparent text-white text-sm">
+      <TypewriterEffect words={words} />
+      <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 space-x-0 md:space-x-4 mt-10">
+        <Link href={"/login"}><button className="w-40 h-10 rounded-xl bg-black border dark:border-white border-transparent text-white text-sm">
           Join now
-        </button>
-        <button className="w-40 h-10 rounded-xl bg-white text-black border border-black  text-sm">
-          Signup
-        </button>
-
+        </button></Link>
+        <Link href={"/register"}>
+          <button className="w-40 h-10 rounded-xl bg-white text-black border border-black  text-sm">
+            Signup
+          </button></Link>
       </div>
-      <ShootingStars />
-      <StarsBackground />
     </div>
+    <ShootingStars minDelay={1500} />
+    <StarsBackground />
+  </>
   );
 }
