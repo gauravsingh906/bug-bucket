@@ -1,6 +1,6 @@
-export const db = "dev-dailog"
+export const db = "bug-basket"
 export const questionCollection = "questions"
 export const answerCollection = "answers"
 export const commentCollection = "comments"
 export const voteCollection = "votes"
-export const questionAttachmentBucket = "question-attachment"
+export const questionAttachmentBucket = "questionAttachmentBucket"

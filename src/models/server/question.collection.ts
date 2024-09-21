@@ -4,6 +4,7 @@ import { db, questionCollection } from "../name"
 import { databases } from "./config"
 
 
+
 export default async function createQuestionCollection() {
   // create collection
   await databases.createCollection(db, questionCollection, questionCollection, [
@@ -50,7 +51,7 @@ export default async function createQuestionCollection() {
       db,
       questionCollection,
       "authorId",
-      IndexType.Unique,
+      IndexType.Key,
       ["authorId"],
       ['asc']
     ),
