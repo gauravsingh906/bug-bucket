@@ -83,7 +83,7 @@ export default function Login() {
             if (response.error) {
                 setError(response.error.message);
             } else {
-                router.push("/dashboard");
+                router.push("/questions");
             }
         } catch {
             setError("Login failed.");

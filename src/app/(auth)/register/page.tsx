@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/Auth";
 import Link from "next/link";
+import Router from "next/navigation";
+import { useRouter } from "next/router";
 const BottomGradient = () => (
     <>
         <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
@@ -20,14 +22,15 @@ export default function Register() {
     const { createAccount } = useAuthStore();
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState("");
+    const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const name = formData.get("name");
+        const name = formData.get("firstname") + " " + formData.get("lastname");
         const email = formData.get("email");
         const password = formData.get("password");
-
+        console.log(name, email, password, "me")
         if (!name || !email || !password) {
             setError("Please fill out all fields");
             return;
@@ -41,7 +44,7 @@ export default function Register() {
             if (response.error) {
                 setError(response.error.message);
             } else {
-                // Optionally, redirect to login or dashboard
+                router.push('/questions')
             }
         } catch {
             setError("Registration failed.");

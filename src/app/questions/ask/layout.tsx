@@ -1,7 +1,6 @@
 "use client";
 
-import { BackgroundBeams } from "@/components/ui/background-beams";
-import { useAuthStore } from "@/store/Auth";
+import { useAuthStore } from "@/store/Auth"; // Assuming you have a Zustand store for authentication
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { Account, Client } from "appwrite";
@@ -17,33 +16,33 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const { session, verifySession } = useAuthStore(); // Use verifySession from the store
     const router = useRouter();
 
-    // Check for session after OAuth flow is completed
+    // Check for session
     const checkSession = async () => {
         try {
-            await verifySession();
-            if (session) {
-                router.push("/"); // Redirect to homepage or dashboard
-            }
+            await verifySession(); // This should check Appwrite session and update your store
         } catch (error) {
             console.error("Failed to fetch session:", error);
         }
     };
 
     useEffect(() => {
+        // If session is not available, verify it
         if (!session) {
-            checkSession(); // Check and update session if not available
-        } else {
-            router.push("/questions/ask"); // If session already exists, redirect to home
+            checkSession().then(() => {
+                if (!session) {
+                    router.push("/login"); // If session does not exist, redirect to login
+                }
+            });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session, router]);
 
-    // If a session exists, prevent rendering the login page
-
+    // Prevent rendering protected children until session is verified
+    if (!session) {
+        return null; // or a loading spinner while verifying session
+    }
 
     return (
-        <div className="relative flex min-h-screen flex-col items-center justify-center ">
-
+        <div className="relative flex min-h-screen flex-col items-center justify-center">
             {children}
         </div>
     );
