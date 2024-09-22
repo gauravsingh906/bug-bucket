@@ -38,8 +38,8 @@ export default function Login() {
         try {
             await account.createOAuth2Session(
                 OAuthProvider.Github,
-                `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/login`, // Success URL
-                `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/login` // Failure URL
+                `/questions`, // Success URL
+                `/login` // Failure URL
             );
         } catch (error) {
             setError("GitHub login failed. Please try again.");
@@ -53,8 +53,8 @@ export default function Login() {
         try {
             await account.createOAuth2Session(
                 OAuthProvider.Google,
-                `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/login`, // Success URL
-                `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/login`, // Failure URL
+                `/questions`, // Success URL
+                `/login`, // Failure URL
                 ['profile', 'email']
             );
         } catch (error) {
