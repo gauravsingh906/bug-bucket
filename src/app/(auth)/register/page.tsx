@@ -91,7 +91,7 @@ export default function Register() {
                 </LabelInputContainer>
 
                 <button
-                    className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-blue-600 to-blue-800 font-medium text-white shadow-lg hover:bg-gradient-to-tr transition duration-300"
+                    className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-lg hover:bg-gradient-to-tr transition duration-300"
                     type="submit"
                     disabled={isLoading}
                 >
