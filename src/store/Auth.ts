@@ -24,7 +24,7 @@ interface IAuthStore {
 
 export const useAuthStore = create<IAuthStore>()(
   persist(
-    immer((set, get) => ({
+    immer((set) => ({
       session: null,
       jwt: null,
       user: null,
@@ -36,9 +36,12 @@ export const useAuthStore = create<IAuthStore>()(
       
       async verifySession() {
         try {
-          const session = await account.getSession("current");
-          const user = await account.get<UserPrefs>();
-          set({ session, user });
+          const sessions = await account.listSessions();
+          if (sessions.total > 0) {
+            const session = await account.getSession("current");
+            const user = await account.get<UserPrefs>();
+            set({ session, user });
+          }
         } catch (error) {
           set({ session: null, user: null, jwt: null });
         }
@@ -46,8 +49,10 @@ export const useAuthStore = create<IAuthStore>()(
       
       async login(email: string, password: string) {
         try {
-          // Delete existing sessions before creating new one
-          await account.deleteSessions();
+          const sessions = await account.listSessions();
+          if (sessions.total > 0) {
+            await account.deleteSessions();
+          }
           
           const session = await account.createEmailPasswordSession(email, password);
           const [user, { jwt }] = await Promise.all([
