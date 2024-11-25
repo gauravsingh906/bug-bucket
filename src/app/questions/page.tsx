@@ -1,42 +1,50 @@
-import { databases, users } from "@/models/server/config";
-import { answerCollection, db, voteCollection, questionCollection } from "@/models/name";
-import { Query } from "node-appwrite";
-import React from "react";
-import Link from "next/link";
-import ShimmerButton from "@/components/magicui/shimmer-button";
-import QuestionCard from "@/components/QuestionCard";
-import Pagination from "@/components/Pagination";
-import Search from "./Search";
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { databases, users } from "@/models/server/config"
+import { answerCollection, db, voteCollection, questionCollection } from "@/models/name"
+import { Query } from "node-appwrite"
+import React from "react"
+import Link from "next/link"
+import ShimmerButton from "@/components/magicui/shimmer-button"
+import QuestionCard from "@/components/QuestionCard"
+import Pagination from "@/components/Pagination"
+import Search from "./Search"
+import { redirect } from "next/navigation"
 
 export default async function Page({
     searchParams,
 }: {
     searchParams: { page?: string; tag?: string; search?: string };
 }) {
+    // Get server-side session
+    const session = await getServerSession(authOptions)
+
+    // Redirect if no authenticated session
+    if (!session) {
+        redirect('/login')
+    }
+
     // Default to page 1 if no page param is given
-    searchParams.page ||= "1";
+    searchParams.page ||= "1"
 
     // Initialize the queries with the default: recent questions
     const queries = [
         Query.orderDesc("$createdAt"),
-        // Query.offset((+searchParams.page - 1) * 2),
         Query.limit(25),
-    ];
+    ]
 
     // Only add filtering conditions if the search params exist
-    if (searchParams.tag) queries.push(Query.equal("tags", searchParams.tag));
+    if (searchParams.tag) queries.push(Query.equal("tags", searchParams.tag))
     if (searchParams.search)
         queries.push(
             Query.or([
                 Query.search("title", searchParams.search),
                 Query.search("content", searchParams.search),
             ])
-        );
+        )
 
     // Fetch questions based on the current queries
-    console.log(searchParams, queries, "kaise")
-    const questions = await databases.listDocuments(db, questionCollection, queries);
-    console.log(questions, "questions")
+    const questions = await databases.listDocuments(db, questionCollection, queries)
 
     // Fetch extra data (author, answers, votes) only for the rendered questions
     const questionsWithDetails = await Promise.all(
@@ -52,7 +60,7 @@ export default async function Page({
                     Query.equal("typeId", ques.$id),
                     Query.limit(1),
                 ]),
-            ]);
+            ])
 
             return {
                 ...ques,
@@ -63,9 +71,9 @@ export default async function Page({
                     reputation: author.prefs.reputation,
                     name: author.name,
                 },
-            };
+            }
         })
-    );
+    )
 
     return (
         <div className="container mx-auto px-4 pb-20 pt-36">
@@ -80,12 +88,10 @@ export default async function Page({
                 </Link>
             </div>
 
-            {/* Search component */}
             <div className="mb-4">
                 <Search />
             </div>
 
-            {/* Only show the questions list if there are results */}
             {questionsWithDetails.length > 0 && (
                 <>
                     <div className="mb-4">
@@ -100,10 +106,9 @@ export default async function Page({
                 </>
             )}
 
-            {/* Display if no questions are found */}
             {questionsWithDetails.length === 0 && (
                 <p className="text-center">No questions found.</p>
             )}
         </div>
-    );
+    )
 }
