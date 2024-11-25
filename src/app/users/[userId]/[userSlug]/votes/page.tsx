@@ -32,8 +32,8 @@ const Page = async ({
             const questionOfTypeQuestion =
                 vote.type === "question"
                     ? await databases.getDocument(db, questionCollection, vote.typeId, [
-                          Query.select(["title"]),
-                      ])
+                        Query.select(["title"]),
+                    ])
                     : null;
 
             if (questionOfTypeQuestion) {
@@ -66,9 +66,8 @@ const Page = async ({
                     <li>
                         <Link
                             href={`/users/${params.userId}/${params.userSlug}/votes`}
-                            className={`block w-full rounded-full px-3 py-0.5 duration-200 ${
-                                !searchParams.voteStatus ? "bg-white/20" : "hover:bg-white/20"
-                            }`}
+                            className={`block w-full rounded-full px-3 py-0.5 duration-200 ${!searchParams.voteStatus ? "bg-white/20" : "hover:bg-white/20"
+                                }`}
                         >
                             All
                         </Link>
@@ -76,11 +75,10 @@ const Page = async ({
                     <li>
                         <Link
                             href={`/users/${params.userId}/${params.userSlug}/votes?voteStatus=upvoted`}
-                            className={`block w-full rounded-full px-3 py-0.5 duration-200 ${
-                                searchParams?.voteStatus === "upvoted"
+                            className={`block w-full rounded-full px-3 py-0.5 duration-200 ${searchParams?.voteStatus === "upvoted"
                                     ? "bg-white/20"
                                     : "hover:bg-white/20"
-                            }`}
+                                }`}
                         >
                             Upvotes
                         </Link>
@@ -88,11 +86,10 @@ const Page = async ({
                     <li>
                         <Link
                             href={`/users/${params.userId}/${params.userSlug}/votes?voteStatus=downvoted`}
-                            className={`block w-full rounded-full px-3 py-0.5 duration-200 ${
-                                searchParams?.voteStatus === "downvoted"
+                            className={`block w-full rounded-full px-3 py-0.5 duration-200 ${searchParams?.voteStatus === "downvoted"
                                     ? "bg-white/20"
                                     : "hover:bg-white/20"
-                            }`}
+                                }`}
                         >
                             Downvotes
                         </Link>
