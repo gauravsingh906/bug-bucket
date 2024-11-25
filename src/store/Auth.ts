@@ -29,11 +29,11 @@ export const useAuthStore = create<IAuthStore>()(
       jwt: null,
       user: null,
       hydrated: false,
-      
+
       setHydrated() {
         set({ hydrated: true });
       },
-      
+
       async verifySession() {
         try {
           const sessions = await account.listSessions();
@@ -46,36 +46,24 @@ export const useAuthStore = create<IAuthStore>()(
           set({ session: null, user: null, jwt: null });
         }
       },
-      
+
       async login(email: string, password: string) {
         try {
           const sessions = await account.listSessions();
           if (sessions.total > 0) {
             await account.deleteSessions();
           }
-<<<<<<< HEAD
 
-=======
-          
->>>>>>> 89f110a1ae805ed4dd2a50d63374bfee95c55590
           const session = await account.createEmailPasswordSession(email, password);
           const [user, { jwt }] = await Promise.all([
             account.get<UserPrefs>(),
             account.createJWT(),
           ]);
-<<<<<<< HEAD
 
           if (!user.prefs?.reputation) {
             await account.updatePrefs<UserPrefs>({ reputation: 0 });
           }
 
-=======
-          
-          if (!user.prefs?.reputation) {
-            await account.updatePrefs<UserPrefs>({ reputation: 0 });
-          }
-          
->>>>>>> 89f110a1ae805ed4dd2a50d63374bfee95c55590
           set({ session, user, jwt });
           return { success: true };
         } catch (error) {
@@ -86,7 +74,7 @@ export const useAuthStore = create<IAuthStore>()(
           };
         }
       },
-      
+
       async createAccount(name: string, email: string, password: string) {
         try {
           await account.create(ID.unique(), email, password, name);
@@ -99,7 +87,7 @@ export const useAuthStore = create<IAuthStore>()(
           };
         }
       },
-      
+
       async logout() {
         try {
           await account.deleteSessions();
@@ -108,16 +96,12 @@ export const useAuthStore = create<IAuthStore>()(
           console.error("Logout error:", error);
         }
       },
-      
+
       async oauthLogin(provider: OAuthProvider) {
         try {
           await account.createOAuth2Session(
             provider,
-<<<<<<< HEAD
             `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/login`,
-=======
-            `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/login`, 
->>>>>>> 89f110a1ae805ed4dd2a50d63374bfee95c55590
             `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/login`
           );
           await this.verifySession();
