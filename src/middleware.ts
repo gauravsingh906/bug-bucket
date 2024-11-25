@@ -24,6 +24,6 @@ export const config = {
 
   */
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/((?!api|questions|_next/static|_next/image|favicon.ico).*)",
   ],
 }
