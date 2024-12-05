@@ -23,7 +23,9 @@ export const config = {
   - favicon.com
 
   */
-  matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+
+   matcher: [
+    "/((?!api|questions|_next/static|_next/image|favicon.ico).*)",
   ],
+ 
 }
