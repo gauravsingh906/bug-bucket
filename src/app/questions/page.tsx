@@ -1,4 +1,3 @@
-
 import { databases, users } from "@/models/server/config";
 import { answerCollection, db, voteCollection, questionCollection } from "@/models/name";
 import { Query } from "node-appwrite";
@@ -92,7 +91,7 @@ export default async function Page({
                     <div className="mb-4">
                         <p>{questions.total} questions found</p>
                     </div>
-                    <div className="mb-4 space-y-6">
+                    <div className="mb-4  space-y-6">
                         {questionsWithDetails.map((ques) => (
                             <QuestionCard key={ques.$id} ques={ques} />
                         ))}
