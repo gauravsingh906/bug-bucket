@@ -19,7 +19,7 @@ const Layout = async ({
 
     return (
         <div className="container mx-auto space-y-6 px-6 pb-20 pt-32 bg-black">
-            <div className="flex flex-col gap-6 sm:flex-row bg-gray-800 shadow-2xl rounded-lg p-6 transition-transform transform hover:scale-105">
+            <div className="flex flex-col gap-6 sm:flex-row bg-gray-800 shadow-2xl rounded-lg p-6 transition-transform transform ">
                 <div className="w-40 shrink-0">
                     <picture className="block w-full">
                         <img
