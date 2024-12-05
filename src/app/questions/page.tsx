@@ -92,7 +92,7 @@ export default async function Page({
                     <div className="mb-4">
                         <p>{questions.total} questions found</p>
                     </div>
-                    <div className="mb-4 max-w-3xl space-y-6">
+                    <div className="mb-4 space-y-6">
                         {questionsWithDetails.map((ques) => (
                             <QuestionCard key={ques.$id} ques={ques} />
                         ))}
