@@ -69,7 +69,7 @@ export default async function Page({
     );
 
     return (
-        <div className="container mx-auto px-4 pb-20 pt-36">
+        <div className=" mx-auto px-4 pb-20 pt-36">
             <div className="mb-10 flex items-center justify-between">
                 <h1 className="text-3xl font-bold">All Questions</h1>
                 <Link href="/questions/ask">
